@@ -1,34 +1,26 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { AppRoutingModule } from './app-routing.module';
-import { ArtistsRoutingModule} from './artists/artist-routing.module';
-import { ManagersRoutingModule } from './managers/manager-routing.module';
-import { SongsRoutingModule } from './songs/song-routing.module';
-import { ArtistsModule } from './artists/artists.module';
-import { ManagersModule } from './managers/managers.module';
-import { SongsModule } from './songs/songs.module';
+import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
+import { DeathSquareModule } from './death-square/death-square.module'
+import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
-import { HomeComponent } from './home/home.component';
-import { AboutComponent } from './about/about.component';
+import { TieFighterComponent } from './tie-fighter/tie-fighter.component';
+import { InfoWindowComponent } from './info-window/info-window.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent,
-    AboutComponent
+    TieFighterComponent,
+    InfoWindowComponent
   ],
   imports: [
-    BrowserModule.withServerTransition({appId: 'cli-universal-demo'}),
-    AppRoutingModule,
-    ArtistsRoutingModule,
-    ArtistsModule,
-    ManagersRoutingModule,
-    ManagersModule,
-    SongsRoutingModule,
-    SongsModule,
-    HttpModule
+    BrowserModule,
+    FormsModule,
+    HttpModule,
+    DeathSquareModule,
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]

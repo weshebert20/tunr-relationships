@@ -1,14 +1,14 @@
-import { AppPage } from './app.po';
+import { ImperialFleetPage } from './app.po';
 
-describe('newer-solution-code App', () => {
-  let page: AppPage;
+describe('imperial-fleet App', () => {
+  let page: ImperialFleetPage;
 
   beforeEach(() => {
-    page = new AppPage();
+    page = new ImperialFleetPage();
   });
 
-  it('should display welcome message', () => {
+  it('should display message saying app works', () => {
     page.navigateTo();
-    expect(page.getParagraphText()).toEqual('Welcome to app!');
+    expect(page.getParagraphText()).toEqual('app works!');
   });
 });
