@@ -193,7 +193,7 @@ ads to help drum up business.
 
 We'll do the following steps to add ads to our managers.
 
-1. Create a new schema ``Ad`` inside `models/manager.js` that includes the fields ``headline`` and ``url`` (both Strings).
+1. Create a new schema ``AdSchema`` inside `models/manager.js` that includes the fields ``headline`` and ``url`` (both Strings).
 2. Embed the `Ad` schema inside the ``Manager`` schema.
 3. Create a new Ad in `seed.js` and embed the ad in the Ricky Bobby manager.
 4. Include `Ad` in the back-end controller for `manager`.
@@ -201,16 +201,13 @@ We'll do the following steps to add ads to our managers.
 
 ## Closing Thoughts
 Relationships are one of the most powerful ways we have of manipulating data. They let us 
-use the JS methods and object that we are much more comfortable with rather than SQL which 
+use the JS methods and object that we are much more comfortable with rather than Mongo which 
 can be messy and lead to bugs.
 
 ## Resources
 
-- [Sequelize Associations Official Docs](http://docs.sequelizejs.com/en/v3/docs/associations/)
-- [Solid Sequelize Tutorial with more advanced topics](https://scotch.io/tutorials/creating-an-angularjs-application-with-sequelize-part-1)\*
-- [How to make many-to-many relationships](http://docs.sequelizejs.com/en/latest/api/associations/belongs-to-many/)
-
-\* Beware, this tutorial has some typos, misplaced files, and poorly explained concepts.  I give it a 7/10.  If you want to get used to reading tutorials, this is a pretty good example of what I'd call "good enough".
+- [Mongoose Books App (Everything except Angular)](https://github.com/den-materials/mongoose-books-app)
+- [Embedded vs Referenced Data](https://github.com/den-materials/mongo-structured-data/)
 
 ## Licensing
 

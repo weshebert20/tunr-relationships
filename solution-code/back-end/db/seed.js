@@ -34,6 +34,11 @@ let lucySongs = [
   }
 ];
 
+let rickBobAd = {
+  headline: "Shake and Bake",
+  url: "https://www.youtube.com/watch?v=vjNLsXwU790"
+};
+
 db.Song.remove({}, function(err, songs) {
   console.log('removed all songs');
   db.Song.create(lucySongs, function(err, savedSongs){
@@ -66,6 +71,7 @@ db.Song.remove({}, function(err, songs) {
             cell_phone_number: managers_list[0].cell_phone_number
           });
           bobby.artists = savedArtist;
+          bobby.ad = rickBobAd;
           bobby.save(function(err, savedManager){
             if (err) {
               console.log(err);
