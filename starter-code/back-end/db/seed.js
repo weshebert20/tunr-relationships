@@ -43,7 +43,7 @@ db.Artist.remove({}, function(err, artists) {
           console.log(err);
           return;
         }
-        console.log("created", managers.length, "songs");
+        console.log("created", managers.length, "managers");
         db.Song.remove({}, function(err, songs) {
           console.log('removed all songs');
           db.Song.create(songs_list, function(err, songs){

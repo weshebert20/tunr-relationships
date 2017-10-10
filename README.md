@@ -62,7 +62,7 @@ express, mongoose, dotenv, body-parser
 #### Sprint 1 Songs and Artists 
 Our first goal is to add a list of songs to the artist detail page and add the artist name
 to the list of songs. To do this, we'll create a **has many** relationship between the 
-``Artist`` and ``Song`` models.
+``Artist`` and ``Song`` models.  We still need the ``Song`` collection to stand on its own, though, so we'll be using *referenced data* for this task.
 
 In the code, we'll need to:
 
@@ -72,54 +72,84 @@ In the code, we'll need to:
 
 
 __Update our models:__
-To update our models we need to add only two lines of code. Remember our **belongs to** and **has many** keywords from our [SQL Relationships lesson](https://github.com/den-materials/joins-and-more)? We need to add those to our ``models/index.ts`` file:
+To update our models we need to add only two lines of code in our `back-end/models/artist.js` file. If you don't remember where to put these lines to implement referenced data, you can check out [this example](https://github.com/den-materials/mongoose-books-app/blob/solution-sprint-3/models/book.js)
 
 ```js
+Song = require('./song');
 ...
-Song.belongsTo(Artist);
-Artist.hasMany(Song);
+songs: [{type: Schema.Types.ObjectId, ref: 'Song'}]
 ...
 ```
 
 __Adding songs to an artist__
 
-First, we need to define a few songs that we will add to our artist, and put them in our `db/seed.ts` file:
+First, we need to define a few songs that we will add to our artist, and put them in our `db/seed.ts` file.  Replace `songs_list` with `lucySongs`:
 
 ```js
-var lucySongs = [
-	{
-		title: "O sole mio",
-		duration: "3:21",
-		date_of_release: "1990",
-		album_title: "Three Tenors in Concert",
-		artistId: ""
-	},
-	{
-		title: "Nessun dorma",
-		duration: "3:21",
-		date_of_release: "1990",
-		album_title: "Three Tenors in Concert",
-		artistId: ""
-	}
+let lucySongs = [
+  {
+    title: "O sole mio",
+    duration: "3:21",
+    date_of_release: "1990",
+    album_title: "Three Tenors in Concert"
+  },
+  {
+    title: "Nessun dorma",
+    duration: "3:21",
+    date_of_release: "1990",
+    album_title: "Three Tenors in Concert"
+  }
 ];
 ```
 
 Next, we need to add them to an Artist. If we're using the seed file, the first artist is Luciano Pavoritti.
 
-How do we add all these songs to Luciano?  Well, remember our friend `foreign key` from our SQL Relationships lesson?
-We need to put Luciano's artist id into a column in each song.  That will look like this:
+How do we add all these songs to Luciano?  We will need to restructure our artist creation a bit.  That will look like this:
 
 ```js
-.then(function(artist) {
-  	lucySongs.forEach(function(song) {
-  		song.artistId = artist.id;
-  	});
-  	DB.Song.bulkCreate(lucySongs);
+db.Song.remove({}, function(err, songs) {
+  console.log('removed all songs');
+  db.Song.create(lucySongs, function(err, savedSongs){
+    if (err) {
+      console.log(err);
+      return;
+    }
+    console.log("created", savedSongs.length, "songs");
+
+    db.Artist.remove({}, function(err, artists) {
+      let lucy = new db.Artist({
+        name: artists_list[0].name,
+        photoUrl: artists_list[0].photoUrl,
+        nationality: artists_list[0].nationality,
+        instrument: artists_list[0].instrument,
+        home_address: artists_list[0].home_address
+      });
+      lucy.songs = savedSongs;  
+      lucy.save(function(err, savedArtist){
+        if (err) {
+          return console.log(err);
+        }
+        console.log('saved ' + savedArtist.name);
+        db.Manager.remove({}, function(err, managers) {
+          console.log('removed all managers');
+          db.Manager.create(managers_list, function(err, managers){
+            if (err) {
+              console.log(err);
+              return;
+            }
+            console.log("created", managers.length, "managers");
+            process.exit();
+          });
+        });
+      });
+    });
   });
+});
 ```
 
-Now, we should be able to access a song's artist with the ``.artist`` method. And the ``.songs`` method will 
-give us the songs associated with an artist.
+Resist the urge to copy and paste here.  Typing this out will build the skills you need to seed referenced data in the future.
+
+Now, we should be able to access a artist's songs with the ``populate('song')`` method.
 
 __Update our Views:__
 
@@ -127,15 +157,17 @@ First, we must update what we're getting back from the Database to include songs
 
 Let's add the following line to the top of our `artists` (server-side) controller:
 
-`var Song = db.models.Song;`
+`var Song = db.Song;`
 
-Then we need to include any Song that matches our artist ID in our `show` route:
+Then we need to include any Song that matches our artist ID in our `show` function:
 
 ```js
-  Artist.findById(req.params.id, {
-    //Return all songs that have a matching artistId
-    include: Song
-  })
+Artist.findById(req.params.id).populate('songs')
+  .exec(function(err, artist){
+    if (err) res.send(err);
+    else if (!artist) res.send(res, "not found");
+    else res.json(artist);
+  }); 
 ```
 
 Finally, we need to add an unordered list to ``artist-show/artist-show.component.html`` with all our songs: 
@@ -145,7 +177,7 @@ Finally, we need to add an unordered list to ``artist-show/artist-show.component
 </ul>
 ```
 
-Run `db/dbSetup.ts` again to accommodate the changes we made to our models.  Then seed your database.  Finally, restart your server, and let's review our work!
+Seed your database if you haven't already.  Finally, restart your servers, and let's review our work!
 
 #### Sprint 2 Artists and Managers
 
