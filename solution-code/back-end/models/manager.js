@@ -5,7 +5,8 @@ var ManagerSchema = new Schema({
   name: String,
   email: String,
   office_number: String,
-  cell_phone_number: String
+  cell_phone_number: String,
+  artists: [{type: Schema.Types.ObjectId, ref: 'Artist'}]
 });
 
 var Manager = mongoose.model('Manager', ManagerSchema);

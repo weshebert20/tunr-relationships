@@ -1,6 +1,6 @@
 var mongoose = require('mongoose'),
   Schema = mongoose.Schema;
-  Song = require('./song');
+  
 var ArtistSchema = new Schema({
   name: String,
   photoUrl: String,

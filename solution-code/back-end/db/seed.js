@@ -59,12 +59,19 @@ db.Song.remove({}, function(err, songs) {
         console.log('saved ' + savedArtist.name);
         db.Manager.remove({}, function(err, managers) {
           console.log('removed all managers');
-          db.Manager.create(managers_list, function(err, managers){
+          let bobby = new db.Manager({
+            name: managers_list[0].name,
+            email: managers_list[0].email,
+            office_number: managers_list[0].office_number,
+            cell_phone_number: managers_list[0].cell_phone_number
+          });
+          bobby.artists = savedArtist;
+          bobby.save(function(err, savedManager){
             if (err) {
               console.log(err);
               return;
             }
-            console.log("created", managers.length, "managers");
+            console.log("saved", savedManager.name);
             process.exit();
           });
         });

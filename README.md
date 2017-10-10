@@ -72,10 +72,9 @@ In the code, we'll need to:
 
 
 __Update our models:__
-To update our models we need to add only two lines of code in our `back-end/models/artist.js` file. If you don't remember where to put these lines to implement referenced data, you can check out [this example](https://github.com/den-materials/mongoose-books-app/blob/solution-sprint-3/models/book.js)
+To update our models we need to add only one line of code in our `back-end/models/artist.js` file. If you don't remember where to put this line to implement referenced data, you can check out [this example](https://github.com/den-materials/mongoose-books-app/blob/solution-sprint-3/models/book.js)
 
 ```js
-Song = require('./song');
 ...
 songs: [{type: Schema.Types.ObjectId, ref: 'Song'}]
 ...
@@ -155,11 +154,7 @@ __Update our Views:__
 
 First, we must update what we're getting back from the Database to include songs with our artist.
 
-Let's add the following line to the top of our `artists` (server-side) controller:
-
-`var Song = db.Song;`
-
-Then we need to include any Song that matches our artist ID in our `show` function:
+To do this, we need to include any Song that matches our artist ID in our `show` function in our `artists` (server-side) controller:
 
 ```js
 Artist.findById(req.params.id).populate('songs')
@@ -183,14 +178,14 @@ Seed your database if you haven't already.  Finally, restart your servers, and l
 
 Just like artists need to highlight the hit songs they are associated with, managers need to highlight the hit artists they are associated with.
 
-First, we need to create a ``has many`` relationship between managers and artists. Try to do 
-this without looking at the Sprint above first, then correct as needed. Don't forget to run `dbSetup.ts`, or you won't be able to finish the next steps.
+First, we need to create a ``has_many``, `embedded` relationship between managers and artists. Try to do 
+this without looking at the Sprint above first, then correct as needed.
 
 Now we have a ``has_many`` relationship between ``Manager`` and ``Artist``, so we need to seed our DB a little differently.  Add Pavarotti to Ricky Bobby's roster. Try to do this without looking at the Sprint above first, then correct as needed.
 
->**Hint:** Maybe the manager should be created first now, then we can pass its id into the artist creation function in a `.then` clause.  Once this is done, do we even need to call `artistCreate()` at the bottom of `seed.ts`?
+>**Hint:** We created a `new` `Artist` called `lucy` before then `save`d him.  How might we create a `new` `Managaer` called `bobby` then `save` him?
 
-Now, let's add an unordered list of the manager's songs to `manager-show/manager-show.component.html`.  Again, try to do this without looking at the Sprint above, then correct as needed.
+Now, let's add an unordered list of the manager's songs to `manager-show/manager-show.component.html`.  Again, try to do this without looking at the Sprint above, then correct as needed.  Don't forget to change the `managers.js` controller as well.
 
 #### Sprint 3 Manager Ads
 Last, but not least, let's start adding some revenue to Tunr. We're enabling managers to create
@@ -198,12 +193,11 @@ ads to help drum up business.
 
 We'll do the following steps to add ads to our managers.
 
-1. Create a new model ``Ad`` that includes the fields ``headline`` and ``url`` (both Strings).
-2. Add a  ``Manager`` ``has_one`` ``Ad`` relationship.
-3. Add an ``Ad`` ``belongs_to`` ``Manager`` relationship. 
-4. Create a new Ad in `seed.js` and associate the Ricky Bobby manager to the ad.
-5. Include `Ad` in the back-end controller for `manager`.
-6. On the manager index page, for each manager add the ad headline as a link to the ad url.
+1. Create a new schema ``Ad`` inside `models/manager.js` that includes the fields ``headline`` and ``url`` (both Strings).
+2. Embed the `Ad` schema inside the ``Manager`` schema.
+3. Create a new Ad in `seed.js` and embed the ad in the Ricky Bobby manager.
+4. Include `Ad` in the back-end controller for `manager`.
+5. On the manager index page, for each manager add the ad headline as a link to the ad url.
 
 ## Closing Thoughts
 Relationships are one of the most powerful ways we have of manipulating data. They let us 

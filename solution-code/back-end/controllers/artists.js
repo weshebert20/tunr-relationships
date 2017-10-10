@@ -1,6 +1,5 @@
 var db = require('../models');
 var Artist = db.Artist;
-var Song = db.Song;
 
 function index(req, res) {
   Artist.find({}, function(err, artists) {
@@ -13,7 +12,6 @@ function show(req, res) {
   Artist.findById(req.params.id).populate('songs')
     .exec(function(err, artist){
       if (err) res.send(err);
-      else if (!artist) res.send(res, "not found");
       else res.json(artist);
     });  
 }
@@ -21,7 +19,6 @@ function show(req, res) {
 function create(req, res) {
   Artist.create(req.body, function(err, artist){
     if (err) res.end(err);
-    else if (!artist) res.send(res, "not saved");
     else res.json(artist);
   });
 }
@@ -37,7 +34,6 @@ function update(req, res) {
 function destroy(req, res) {
   Artist.findByIdAndRemove(req.params.id, function(err, artist){
     if (err) res.send(err);
-    else if (!artist) res.send(res, "not found");
     else res.send("artist deleted");
   }); 
 }
