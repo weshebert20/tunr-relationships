@@ -5,8 +5,6 @@ Market: Denver
 
 ![](https://ga-dash.s3.amazonaws.com/production/assets/logo-9f88ae6c9c3871690e33280fcf557f33.png)
 
-<!-- Decided to do this as a pair programming activity but with other person's computer -->
-
 # Building Models
 
 ### Why is this important?
@@ -14,22 +12,22 @@ Market: Denver
 *This workshop is important because:*
 
 Most applications include more than one model. Most of these models are related in some 
-way, for instance, artists play multiple songs. Sequelize provides helpful methods for working with related models, just like finding and querying a single table.
+way, for instance, artists play multiple songs. Mongoose provides helpful methods for working with related models, just like it helps with querying a single collection.
 
 ### What are the objectives?
 <!-- specific/measurable goal for students to achieve -->
 *After this workshop, developers will be able to:*
 
-- **Create** Sequelize models with ``has many`` and ``belongs to`` relationships
-- **Create** Sequelize models with ``has one`` relationships 
+- **Create** Mongoose models with ``has many`` and ``belongs to`` relationships (referenced data)
+- **Create** Mongoose models with ``has one`` relationships (embedded data)
 
 ### Where should we be now?
 <!-- call out the skills that are prerequisites -->
 *Before this workshop, developers should already be able to:*
 
 - Create an Express app
-- Create a model with Sequelize
-- Get data from a SQL database using PostgreSQL
+- Create a model with Mongoose
+- Get data from a Mongo database using Mongoose
 
 ## Relationships 
 
@@ -39,7 +37,7 @@ song information to artists and help managers gain some credibility by listing t
 clients. Finally we'll add an optional revenue source by enabling managers to create an ad 
 to help attract new clients.
 
-Now that our Tunr app has artists, managers, and songs, we need to connect them. Enter our old friend, the ERD: 
+Now that our Tunr app has artists, managers, and songs, we need to connect them. Enter the ERD (Entity Relationship Diagram): 
 
 ![Tunr ERD](tunr_erd.png)
 
@@ -52,16 +50,13 @@ You'll notice the `starter-code` for this application is basically the finished 
 What are the steps to set up a new application from Github?
 
 <details>
-Fork/clone the repo, `npm install`, `ts-node src/db/dbSetup.ts`, `npm start`.
-
-This repo uses a different database than our Tunr database from last lab so you'll need to 
-create it in psql.
+Fork/clone the repo, `npm install` in `back-end` and run `node db/seed.js` and `node server.js`.  And then `npm install` in `front-end` and run `ng serve`.
 </details>
 
 It's also a good idea to review the code and see what dependencies are included. What might be some useful dependencies that are included?
 
 <details>
-express, sequelize, pg, pg-hstore, body-parser
+express, mongoose, dotenv, body-parser
 </details>
 
 #### Sprint 1 Songs and Artists 
